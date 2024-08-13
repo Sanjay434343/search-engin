@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Foldit:wght@100..900&family=Kalnia+Glaze:wght@100..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=New+Amsterdam&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Permanent+Marker&family=Playwrite+BE+WAL:wght@100..400&family=Reem+Kufi+Fun:wght@400..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Shadows+Into+Light&family=Sora:wght@100..800&display=swap" rel="stylesheet">
+    <title>Bing Search Engine</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <style>
+        /* Reset some default styling */
+        body, h1, h2, p, ul {
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #0d1117; /* GitHub dark background color */
+            color: #c9d1d9; /* GitHub dark text color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 2000px;
+            padding: 24px;
+            background: #161b22; /* Dark container background */
+            border-radius: 6px;
+            box-sizing: border-box;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        h1 {
+            font-family: "New Amsterdam", sans-serif;
+            font-weight: 400;
+            text-align: center;
+            color: #58a6ff; /* GitHub dark blue */
+            margin-bottom: 24px;
+            font-size: 32px;
+        }
+        
+        form {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        input[type="text"] {
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #30363d; /* Dark border */
+            border-radius: 6px;
+            flex: 1;
+            margin-right: 8px;
+            box-sizing: border-box;
+            background-color: #0d1117; /* Dark input background */
+            color: #c9d1d9; /* Input text color */
+        }
+        
+        input[type="submit"] {
+            padding: 12px 24px;
+            font-size: 16px;
+            background-color: #238636; /* GitHub dark green */
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        input[type="submit"]:hover {
+            background-color: #2ea043; /* Darker green for hover */
+        }
+        
+        .result {
+            background-color: #161b22; /* Dark background for results */
+            border-radius: 6px;
+        }
+        
+        .result ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .result li {
+            padding: 12px;
+            border-bottom: 1px solid #30363d; /* Dark border between results */
+            margin-bottom: 8px;
+            background-color: #0d1117; /* Dark result background */
+            border-radius: 6px;
+        }
+        
+        .result li:last-child {
+            border-bottom: none; /* Remove border from the last item */
+        }
+        
+        .result li a {
+            text-decoration: none;
+            color: #58a6ff; /* GitHub dark blue */
+            font-weight: 600;
+            font-size: 16px;
+            transition: color 0.2s ease;
+        }
+        
+        .result li a:hover {
+            color: #79c0ff; /* Lighter blue for hover */
+        }
+        
+        .result li p {
+            margin-top: 4px;
+            color: #8b949e; /* Lighter gray for text */
+        }
+        
+        @media (max-width: 768px) {
+            form {
+                flex-direction: column;
+                align-items: stretch; /* Ensures full-width input on small screens */
+            }
+        
+            input[type="text"] {
+                width: 100%;
+                margin-right: 0; /* Removes margin on small screens */
+                margin-bottom: 12px; /* Adds space below text input */
+            }
+        
+            input[type="submit"] {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 16px;
+            }
+        
+            h1 {
+                font-size: 24px;
+            }
+        
+            input[type="text"], input[type="submit"] {
+                font-size: 14px;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .res{
+            font-size:12px;
+            margin-top: -20px;
+            margin-bottom:15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ngmc Search Engine</h1>
+        <form method="post">
+            <input type="text" name="query" placeholder="Search..." value="{{ query }}">
+            <input type="submit" value="Search">
+        </form>
+        
+        {% if query %}
+            <h2 class="res">Search Results for "{{ query }}"</h2>
+            <div class="result">
+                <ul>
+                {% for item in results %}
+                    <li>
+                        <a href="{{ item.link }}" target="_blank">{{ item.title }}</a><br>
+                        <p>{{ item.snippet }}</p>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
